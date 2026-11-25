@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WSRNC · Works</title>
+<style>
+:root{--bg:#0e0e11;--ink:#ececec;--sub:#7a7a82;--line:#26262c;--panel:#1a1a1f;--about:#141418;--navbg:rgba(14,14,17,.85);--btn:#333;--accent:#ff3d7f;--accent2:#7b5cff}
+body.light{--bg:#fafaf8;--ink:#141414;--sub:#8a8a8a;--line:#e3e3e3;--panel:#eee;--about:#141414;--navbg:rgba(250,250,248,.9);--btn:#ddd}
+body{transition:background .5s,color .5s}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"Helvetica Neue","PingFang SC","Noto Sans SC",sans-serif;letter-spacing:.02em}
+a{color:inherit;text-decoration:none}
+/* nav */
+nav{color:#fff;position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:22px 5vw;transition:background .4s,padding .4s}
+nav.solid{color:var(--ink);background:var(--navbg);backdrop-filter:blur(10px);padding:14px 5vw}
+.logo{font-weight:800;font-size:20px;letter-spacing:.18em}
+.logo span{color:var(--accent)}
+nav ul{display:flex;gap:34px;list-style:none;font-size:13px;letter-spacing:.25em}
+.theme{background:none;border:1px solid currentColor;color:inherit;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;line-height:1;transition:transform .4s}
+.theme:hover{transform:rotate(30deg)}
+nav ul{align-items:center}
+nav li a{position:relative;padding-bottom:4px}
+nav li a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);transition:width .35s}
+nav li a:hover::after{width:100%}
+/* hero */
+.hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0 5vw 9vh}
+.slides{position:absolute;inset:0}
+.slide{position:absolute;inset:0;background-size:cover;background-position:center 20%;opacity:0;transform:scale(1.12);transition:opacity 1.4s ease,transform 7s linear}
+.slide.on{opacity:1;transform:scale(1)}
+.shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent 55%)}
+.dots{position:absolute;left:5vw;bottom:4vh;display:flex;gap:10px;z-index:2}
+.dots i{width:28px;height:2px;background:rgba(255,255,255,.35);cursor:pointer;position:relative;overflow:hidden}
+.dots i.on::after{content:"";position:absolute;inset:0;background:#fff;animation:bar 5s linear forwards}
+@keyframes bar{from{transform:translateX(-100%)}to{transform:none}}
+.now{margin-top:10px;font-size:12px;letter-spacing:.3em;opacity:.8}
+.old-hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#2b1d5c,#7b5cff 45%,#ff3d7f);transform:scale(1.15);animation:heroIn 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,255,255,.35),transparent 45%)}
+@keyframes heroIn{to{transform:scale(1)}}
+.hero-text{position:relative;color:#fff}
+.hero-text h1{font-size:clamp(48px,9vw,130px);font-weight:900;line-height:1}
+.hero-text h1 .ln{display:block;overflow:hidden}
+.hero-text h1 span{display:inline-block;transform:translateY(110%);animation:up 1s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-text p{margin-top:18px;font-size:14px;letter-spacing:.35em;opacity:0;animation:fade 1s .7s forwards}
+@keyframes up{to{transform:none}}
+@keyframes fade{to{opacity:.85}}
+.scroll-hint{position:absolute;right:5vw;bottom:9vh;color:#fff;font-size:11px;letter-spacing:.4em;writing-mode:vertical-rl;opacity:.8;animation:bob 2s infinite}
+@keyframes bob{50%{transform:translateY(8px)}}
+/* works */
+section{padding:120px 5vw}
+.sec-title{display:flex;align-items:baseline;gap:18px;margin-bottom:60px}
+.sec-title h2{font-size:34px;font-weight:800;letter-spacing:.12em}
+.sec-title small{color:var(--sub);font-size:12px;letter-spacing:.3em}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:50px}
+.filters button{border:1px solid var(--btn);background:none;color:var(--ink);padding:8px 18px;border-radius:99px;font-size:12px;letter-spacing:.15em;cursor:pointer;transition:.3s}
+.filters button.on,.filters button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.year{font-size:13px;letter-spacing:.4em;color:var(--sub);margin:70px 0 26px;display:flex;align-items:center;gap:16px}
+.year::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{columns:3 300px;column-gap:32px}
+.card{break-inside:avoid;margin-bottom:40px;cursor:pointer;opacity:0;transform:translateY(40px);transition:opacity .9s,transform .9s cubic-bezier(.2,.7,.2,1)}
+.card.show{opacity:1;transform:none}
+.thumb{overflow:hidden;position:relative;background:var(--panel)}
+.thumb img{display:block;width:100%;height:auto;transition:transform 1s cubic-bezier(.2,.7,.2,1),filter .6s}
+.card:hover .thumb img{transform:scale(1.07)}
+.thumb::after{content:"VIEW";position:absolute;left:0;bottom:0;background:var(--accent);color:#fff;font-size:11px;letter-spacing:.3em;padding:8px 16px;transform:translateY(100%);transition:transform .4s}
+.card:hover .thumb::after{transform:none}
+.meta{display:flex;justify-content:space-between;margin-top:14px;font-size:14px}
+.meta span{color:var(--sub);font-size:12px}
+/* about */
+#about{background:var(--about);color:#eee}
+#about .sec-title small{color:#777}
+.about-body{max-width:640px;line-height:2.1;font-size:15px;color:#bbb}
+.about-body b{color:var(--accent)}
+#contact{text-align:center}
+#contact a.big{font-size:clamp(28px,5vw,60px);font-weight:900;letter-spacing:.06em;background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;color:transparent}
+footer{text-align:center;color:var(--sub);font-size:11px;letter-spacing:.3em;padding:40px}
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(10,10,10,.92);z-index:100;display:flex;align-items:center;justify-content:center;gap:50px;padding:5vw;opacity:0;pointer-events:none;transition:opacity .4s}
+.lb.open{opacity:1;pointer-events:auto}
+.lb .big-img{max-width:62vw;max-height:84vh;object-fit:contain;transform:scale(.94);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.lb.open .big-img{transform:none}
+.lb .info{color:#eee;max-width:360px}
+.lb h3{font-size:28px;margin-bottom:8px}
+.lb .y{color:#888;font-size:12px;letter-spacing:.3em;margin-bottom:30px}
+.lb .credit{font-size:13px;line-height:2;color:#bbb;white-space:pre-line;border-left:2px solid var(--accent);padding-left:16px}
+.lb button{margin-top:26px;background:var(--accent);color:#fff;border:0;padding:10px 22px;font-size:12px;letter-spacing:.2em;cursor:pointer}
+.lb .x{position:absolute;top:24px;right:30px;color:#fff;font-size:30px;cursor:pointer;background:none;margin:0;padding:0}
+@media(max-width:760px){.lb .big-img{max-width:90vw;max-height:60vh}nav ul{gap:18px}.lb{flex-direction:column;gap:24px}}
+</style>
+</head>
+<body>
+<nav id="nav"><a class="logo" href="#">WSRN<span>C</span></a>
+<ul><li><a href="#works">作品</a></li><li><a href="#about">关于</a></li><li><a href="#contact">联系</a></li><li><button id="theme" class="theme" title="切换浅色/深色">☾</button></li></ul></nav>
+
+<header class="hero">
+  <div class="slides" id="slides"></div><div class="shade"></div><div class="dots" id="dots"></div>
+  <div class="hero-text"><h1><i class="ln" style="font-style:normal"><span>WSRNC</span></i><i class="ln" style="font-style:normal"><span style="animation-delay:.15s">WORKS</span></i></h1><p>ILLUSTRATION · AI ART · GAMES</p><div class="now" id="now"></div></div>
+  <div class="scroll-hint">SCROLL</div>
+</header>
+
+<section id="works">
+  <div class="sec-title"><h2>作品</h2><small>WORKS</small></div>
+  <div class="filters" id="filters"></div>
+  <div id="list"></div>
+</section>
+
+<section id="about">
+  <div class="sec-title"><h2>关于</h2><small>ABOUT</small></div>
+  <div class="about-body">你好，我是 WSRNC。<br>
+用 AI 画我喜欢的游戏角色，魂系、方舟、黑暗幻想为主，画得不像就当是平行世界。<br>
+部分作品借鉴了其他创作者分享的提示词和角色设计，出处都标在每张图的详情里，感谢他们的分享。<br>
+作品仅作交流，请勿商用或二次贩卖。<br>
+X：<a href="https://x.com/wsrncmrmmp" target="_blank" style="color:var(--accent);border-bottom:1px solid var(--accent)">@wsrncmrmmp</a></div>
+</section>
+
+<section id="contact">
+  <div class="sec-title" style="justify-content:center"><h2>联系</h2><small>CONTACT</small></div>
+  <a class="big" href="https://x.com/wsrncmrmmp" target="_blank">@wsrncmrmmp</a>
+</section>
+<footer>© WSRNC</footer>
+
+<div class="lb" id="lb"><button class="x" id="lbx">×</button>
+  <img class="big-img" id="lbImg" alt="">
+  <div class="info"><h3 id="lbT"></h3><div class="y" id="lbY"></div><div class="credit" id="lbC"></div><button id="copy">复制出处</button></div>
+</div>
+
+<script>
+/* ===== 在这里换成你自己的作品 =====
+   img: 图片路径（和 index.html 放同一个文件夹，比如 "works/01.jpg"）
+   不填 img 就显示渐变色占位 */
+const WORKS = [
+  {title:"彼岸", year:2026, tag:"花与画框", img:"works/01.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"白龙与骑士", year:2026, tag:"黑暗幻想", img:"works/02.jpg", credit:"原创 · WSRNC"},
+  {title:"百合", year:2026, tag:"花与画框", img:"works/03.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"荆棘玫瑰", year:2026, tag:"花与画框", img:"works/04.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"灯下小憩", year:2026, tag:"橘发少女", img:"works/05.jpg", credit:"原创 · WSRNC"},
+  {title:"草莓蛋糕进行时", year:2026, tag:"银龙的日常", img:"works/06.jpg", credit:"原创 · WSRNC"},
+  {title:"黑鳞", year:2026, tag:"银龙的夜", img:"works/07.jpg", credit:"原创 · WSRNC"},
+  {title:"王座之间", year:2026, tag:"银龙的夜", img:"works/08.jpg", credit:"原创 · WSRNC"},
+  {title:"秋日长椅", year:2026, tag:"橘发少女", img:"works/09.jpg", credit:"原创 · WSRNC"},
+  {title:"荆棘之花", year:2026, tag:"花与画框", img:"works/10.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"黑龙与牡丹", year:2026, tag:"花与画框", img:"works/11.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"金框里的蓝", year:2026, tag:"花与画框", img:"works/12.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"初雪", year:2026, tag:"橘发少女", img:"works/13.jpg", credit:"原创 · WSRNC"},
+  {title:"午后的猫", year:2026, tag:"橘发少女", img:"works/14.jpg", credit:"原创 · WSRNC"},
+  {title:"换袜子", year:2026, tag:"银龙的日常", img:"works/15.jpg", credit:"原创 · WSRNC"},
+  {title:"下午茶", year:2026, tag:"银龙的日常", img:"works/16.jpg", credit:"原创 · WSRNC"},
+  {title:"早安吐司", year:2026, tag:"橘发少女", img:"works/17.jpg", credit:"原创 · WSRNC"},
+  {title:"抱书的魔女", year:2026, tag:"黑暗幻想", img:"works/18.jpg", credit:"原创 · WSRNC"},
+  {title:"余烬", year:2026, tag:"黑暗幻想", img:"works/19.jpg", credit:"原创 · WSRNC"},
+  {title:"灰烬中的书", year:2026, tag:"黑暗幻想", img:"works/20.jpg", credit:"原创 · WSRNC"},
+  {title:"雨天窗边", year:2026, tag:"橘发少女", img:"works/21.jpg", credit:"原创 · WSRNC"},
+];
+const PH = ["#7b5cff,#ff3d7f","#1f2b5c,#5cc8ff","#2b1d1d,#c9a25b","#0f3d3a,#8fffcf","#ffb36b,#ff3d7f","#3a1c5c,#b88cff","#111,#555","#ff8fb3,#ffe08f"];
+const bg = (w,i)=> w.img ? `url("${w.img}")` : `linear-gradient(160deg,${PH[i%PH.length]})`;
+WORKS.forEach((w,i)=>w._bg=bg(w,i));
+
+const list=document.getElementById('list'), filters=document.getElementById('filters');
+const tags=["全部","花与画框","银龙的日常","银龙的夜","橘发少女","黑暗幻想"];
+let cur="全部";
+tags.forEach(t=>{const b=document.createElement('button');b.textContent=t;if(t===cur)b.className='on';
+  b.onclick=()=>{cur=t;[...filters.children].forEach(x=>x.className=x===b?'on':'');render()};filters.appendChild(b)});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.15});
+function render(){
+  list.innerHTML="";
+  const ws=WORKS.filter(w=>cur==="全部"||w.tag===cur);
+  [...new Set(ws.map(w=>w.year))].sort((a,b)=>b-a).forEach(y=>{
+    const h=document.createElement('div');h.className='year';h.textContent=y;list.appendChild(h);
+    const g=document.createElement('div');g.className='grid';
+    ws.filter(w=>w.year===y).forEach((w,i)=>{
+      const c=document.createElement('div');c.className='card';c.style.transitionDelay=(i%3)*0.12+'s';
+      c.innerHTML=`<div class="thumb"><img loading="lazy" src="${w.img}" alt="${w.title}"></div><div class="meta">${w.title}<span>${w.tag}</span></div>`;
+      c.onclick=()=>openLb(w);g.appendChild(c);io.observe(c);
+    });
+    list.appendChild(g);
+  });
+}
+render();
+
+const lb=document.getElementById('lb');
+function openLb(w){document.getElementById('lbImg').src=w.img;lbT.textContent=w.title;lbY.textContent=w.year+' · '+w.tag;lbC.textContent=w.credit;lb.classList.add('open')}
+lbx.onclick=()=>lb.classList.remove('open');lb.onclick=e=>{if(e.target===lb)lb.classList.remove('open')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
+copy.onclick=()=>{navigator.clipboard.writeText(lbC.textContent);copy.textContent='已复制 ✓';setTimeout(()=>copy.textContent='复制出处',1500)};
+
+/* 首页轮播：自动播放全部作品 */
+const FEATURED=[...WORKS.slice(1),WORKS[0]]; /* 从第 2 张「白龙与骑士」开始 */
+const slidesEl=document.getElementById('slides'),dotsEl=document.getElementById('dots'),nowEl=document.getElementById('now');
+FEATURED.forEach((w,i)=>{const d=document.createElement('div');d.className='slide';d.style.backgroundImage=w._bg;d.onclick=()=>openLb(w);d.style.cursor='pointer';slidesEl.appendChild(d);
+  const dot=document.createElement('i');dot.onclick=()=>go(i);dotsEl.appendChild(dot)});
+let si=0,timer;
+function go(i){si=(i+FEATURED.length)%FEATURED.length;[...slidesEl.children].forEach((e,k)=>e.classList.toggle('on',k===si));
+  [...dotsEl.children].forEach((e,k)=>{e.classList.remove('on');if(k===si){void e.offsetWidth;e.classList.add('on')}});
+  nowEl.textContent='NOW · '+FEATURED[si].title;clearTimeout(timer);timer=setTimeout(()=>go(si+1),5000)}
+go(0);
+/* 浅色 / 深色切换，会记住上次的选择 */
+const themeBtn=document.getElementById('theme');
+function setTheme(t){document.body.classList.toggle('light',t==='light');themeBtn.textContent=t==='light'?'☀':'☾';try{localStorage.setItem('theme',t)}catch(e){}}
+let saved='dark';try{saved=localStorage.getItem('theme')||'dark'}catch(e){}
+setTheme(saved);themeBtn.onclick=()=>setTheme(document.body.classList.contains('light')?'dark':'light');
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>{nav.classList.toggle('solid',scrollY>innerHeight*.8)});
+</script>
+</body>
+</html>
