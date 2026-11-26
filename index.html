@@ -24,29 +24,6 @@ nav ul{align-items:center}
 nav li a{position:relative;padding-bottom:4px}
 nav li a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);transition:width .35s}
 nav li a:hover::after{width:100%}
-/* hero */
-.hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0 5vw 9vh}
-.slides{position:absolute;inset:0}
-.slide{position:absolute;inset:0;background-size:cover;background-position:center 20%;opacity:0;transform:scale(1.12);transition:opacity 1.4s ease,transform 7s linear}
-.slide.on{opacity:1;transform:scale(1)}
-.shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent 55%)}
-.dots{position:absolute;left:5vw;bottom:4vh;display:flex;gap:10px;z-index:2}
-.dots i{width:28px;height:2px;background:rgba(255,255,255,.35);cursor:pointer;position:relative;overflow:hidden}
-.dots i.on::after{content:"";position:absolute;inset:0;background:#fff;animation:bar 5s linear forwards}
-@keyframes bar{from{transform:translateX(-100%)}to{transform:none}}
-.now{margin-top:10px;font-size:12px;letter-spacing:.3em;opacity:.8}
-.old-hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#2b1d5c,#7b5cff 45%,#ff3d7f);transform:scale(1.15);animation:heroIn 2.4s cubic-bezier(.2,.7,.2,1) forwards}
-.hero-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,255,255,.35),transparent 45%)}
-@keyframes heroIn{to{transform:scale(1)}}
-.hero-text{position:relative;color:#fff}
-.hero-text h1{font-size:clamp(48px,9vw,130px);font-weight:900;line-height:1}
-.hero-text h1 .ln{display:block;overflow:hidden}
-.hero-text h1 span{display:inline-block;transform:translateY(110%);animation:up 1s cubic-bezier(.2,.7,.2,1) forwards}
-.hero-text p{margin-top:18px;font-size:14px;letter-spacing:.35em;opacity:0;animation:fade 1s .7s forwards}
-@keyframes up{to{transform:none}}
-@keyframes fade{to{opacity:.85}}
-.scroll-hint{position:absolute;right:5vw;bottom:9vh;color:#fff;font-size:11px;letter-spacing:.4em;writing-mode:vertical-rl;opacity:.8;animation:bob 2s infinite}
-@keyframes bob{50%{transform:translateY(8px)}}
 /* works */
 section{padding:120px 5vw}
 .sec-title{display:flex;align-items:baseline;gap:18px;margin-bottom:60px}
@@ -66,7 +43,7 @@ section{padding:120px 5vw}
 .thumb::after{content:"VIEW";position:absolute;left:0;bottom:0;background:var(--accent);color:#fff;font-size:11px;letter-spacing:.3em;padding:8px 16px;transform:translateY(100%);transition:transform .4s}
 .card:hover .thumb::after{transform:none}
 .meta{display:flex;justify-content:space-between;margin-top:14px;font-size:14px}
-.meta span{color:var(--sub);font-size:12px}
+.meta{align-items:baseline;gap:12px}.meta .en{font-size:21px;line-height:1.2;color:var(--ink)}.meta span:not(.en){color:var(--sub);font-size:12px;white-space:nowrap}
 /* about */
 #about{background:var(--about);color:#eee}
 #about .sec-title small{color:#777}
@@ -81,12 +58,82 @@ footer{text-align:center;color:var(--sub);font-size:11px;letter-spacing:.3em;pad
 .lb .big-img{max-width:62vw;max-height:84vh;object-fit:contain;transform:scale(.94);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
 .lb.open .big-img{transform:none}
 .lb .info{color:#eee;max-width:360px}
-.lb h3{font-size:28px;margin-bottom:8px}
+.lb h3{font-size:38px;line-height:1.1;margin-bottom:10px}
 .lb .y{color:#888;font-size:12px;letter-spacing:.3em;margin-bottom:30px}
 .lb .credit{font-size:13px;line-height:2;color:#bbb;white-space:pre-line;border-left:2px solid var(--accent);padding-left:16px}
 .lb button{margin-top:26px;background:var(--accent);color:#fff;border:0;padding:10px 22px;font-size:12px;letter-spacing:.2em;cursor:pointer}
 .lb .x{position:absolute;top:24px;right:30px;color:#fff;font-size:30px;cursor:pointer;background:none;margin:0;padding:0}
 @media(max-width:760px){.lb .big-img{max-width:90vw;max-height:60vh}nav ul{gap:18px}.lb{flex-direction:column;gap:24px}}
+/* fonts (self-hosted: Google Fonts is unreliable in mainland China) */
+@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/Anton.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/CormorantGaramond.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:300 700;font-display:swap;src:url(fonts/CormorantGaramond-italic.woff2) format('woff2')}
+:root{--side:150px;--disp:'Anton',"Helvetica Neue",Impact,sans-serif;--serif:'Cormorant Garamond',Georgia,"Times New Roman",serif}
+.en{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:.01em}
+/* hero: LAM-style side marquee + page-flip slideshow */
+nav{left:var(--side)}
+nav.solid{left:0}
+.hero{height:100vh;height:100svh;display:flex;position:relative;overflow:hidden}
+.side{width:var(--side);flex:none;display:flex;justify-content:center;gap:8px;background:var(--bg);color:var(--ink);overflow:hidden;transition:background .5s,color .5s;user-select:none}
+.mq,.tick{height:100%;overflow:hidden;writing-mode:vertical-rl;white-space:nowrap}
+.track{display:flex;width:max-content;animation:mqv 60s linear infinite}
+.track span{display:block}
+.mq{font-family:var(--disp);font-size:78px;line-height:1;letter-spacing:.01em;text-transform:uppercase}
+.mq b{color:var(--accent);font-weight:400}
+.tick{font-size:12px;font-weight:700;letter-spacing:.08em;line-height:1;opacity:.85}
+.tick i{font-style:normal;color:var(--accent);margin:0 .6em}
+.tick .track{animation-duration:45s;animation-direction:reverse}
+.tick--b .track{animation-duration:38s;animation-direction:normal}
+@keyframes mqv{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+@keyframes mqh{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.visual{position:relative;flex:1;min-width:0;overflow:hidden;display:flex;align-items:flex-end;padding:0 5vw 11vh;background:#111}
+.flip-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;cursor:pointer;animation:kb 7s ease-out both}
+@keyframes kb{from{transform:scale(1.08)}to{transform:scale(1)}}
+.rect{position:absolute;inset:0;transform:translateX(-101%);pointer-events:none;z-index:3;will-change:transform}
+.r2::after{content:"";position:absolute;top:0;bottom:0;right:0;width:6px;background:var(--accent)}
+.visual.back .r2::after{right:auto;left:0}
+.shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent 55%);pointer-events:none;z-index:1}
+.hero-text{position:relative;color:#fff;z-index:4;pointer-events:none}
+.hero-text h1{font-family:var(--disp);font-weight:400;font-size:clamp(56px,9.5vw,140px);line-height:.95;letter-spacing:.02em}
+.hero-text h1 .ln{display:block;overflow:hidden}
+.hero-text h1 span{display:inline-block;transform:translateY(110%);animation:up 1s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-text p{margin-top:18px;font-size:13px;letter-spacing:.35em;opacity:0;animation:fade 1s .7s forwards}
+@keyframes up{to{transform:none}}
+@keyframes fade{to{opacity:.85}}
+.now{margin-top:22px;display:flex;align-items:baseline;gap:14px;min-height:34px}
+.now small{font-size:11px;letter-spacing:.35em;opacity:.75}
+.now .en{font-size:clamp(22px,2.4vw,32px)}
+.hud{position:absolute;right:5vw;bottom:5vh;z-index:5;display:flex;align-items:center;gap:14px;color:#fff}
+.ring{position:relative;width:64px;height:64px}
+.ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:2}
+.ring .bgc{stroke:rgba(255,255,255,.25)}
+.ring .fg{stroke:#fff;stroke-dasharray:188.5;stroke-dashoffset:188.5}
+.ring .fg.run{animation:ring var(--dur,5s) linear forwards}
+@keyframes ring{to{stroke-dashoffset:0}}
+.ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:400;font-size:15px;letter-spacing:.04em}
+.ring b small{font-size:10px;opacity:.6;margin-left:2px}
+.hud button{background:none;border:1px solid rgba(255,255,255,.6);color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;transition:background .3s,border-color .3s}
+.hud button:hover{background:var(--accent);border-color:var(--accent)}
+.scroll-hint{position:absolute;right:5vw;top:50%;color:#fff;font-size:11px;letter-spacing:.4em;writing-mode:vertical-rl;opacity:.8;animation:bob 2s infinite;z-index:4;pointer-events:none}
+@keyframes bob{50%{transform:translateY(8px)}}
+@media(max-width:760px){
+  :root{--side:0px}
+  .hero{flex-direction:column-reverse}
+  .side{width:100%;height:92px;flex-direction:column;justify-content:center;gap:5px}
+  .mq,.tick{writing-mode:horizontal-tb;height:auto;width:100%}
+  .track{animation-name:mqh}
+  .mq{font-size:44px}
+  .tick{font-size:10px}
+  .visual{padding:0 6vw 120px}
+  .hud{right:auto;left:6vw;bottom:28px}
+  .scroll-hint{display:none}
+  .now{flex-direction:column;gap:6px}
+}
+@media(prefers-reduced-motion:reduce){
+  .track,.flip-img,.ring .fg.run,.scroll-hint{animation:none!important}
+  .ring .fg{stroke-dashoffset:0}
+}
 </style>
 </head>
 <body>
@@ -94,9 +141,19 @@ footer{text-align:center;color:var(--sub);font-size:11px;letter-spacing:.3em;pad
 <ul><li><a href="#works">作品</a></li><li><a href="#about">关于</a></li><li><a href="#contact">联系</a></li><li><button id="theme" class="theme" title="切换浅色/深色">☾</button></li></ul></nav>
 
 <header class="hero">
-  <div class="slides" id="slides"></div><div class="shade"></div><div class="dots" id="dots"></div>
-  <div class="hero-text"><h1><i class="ln" style="font-style:normal"><span>WSRNC</span></i><i class="ln" style="font-style:normal"><span style="animation-delay:.15s">WORKS</span></i></h1><p>ILLUSTRATION · AI ART · GAMES</p><div class="now" id="now"></div></div>
-  <div class="scroll-hint">SCROLL</div>
+  <aside class="side" aria-hidden="true">
+    <div class="tick tick--a"><div class="track"><span>Dark Fantasy<i>✦</i>Silver Dragon<i>✦</i>Orange-haired Girl<i>✦</i>Fan Art<i>✦</i>AI Illustration<i>✦</i>Dark Fantasy<i>✦</i>Silver Dragon<i>✦</i>Orange-haired Girl<i>✦</i>Fan Art<i>✦</i>AI Illustration<i>✦</i>Dark Fantasy<i>✦</i>Silver Dragon<i>✦</i>Orange-haired Girl<i>✦</i>Fan Art<i>✦</i>AI Illustration<i>✦</i></span><span>Dark Fantasy<i>✦</i>Silver Dragon<i>✦</i>Orange-haired Girl<i>✦</i>Fan Art<i>✦</i>AI Illustration<i>✦</i>Dark Fantasy<i>✦</i>Silver Dragon<i>✦</i>Orange-haired Girl<i>✦</i>Fan Art<i>✦</i>AI Illustration<i>✦</i>Dark Fantasy<i>✦</i>Silver Dragon<i>✦</i>Orange-haired Girl<i>✦</i>Fan Art<i>✦</i>AI Illustration<i>✦</i></span></div></div>
+    <div class="mq"><div class="track"><span>WSRNC <b>✦</b> AI ILLUSTRATION <b>✦</b> WSRNC <b>✦</b> AI ILLUSTRATION <b>✦</b> WSRNC <b>✦</b> AI ILLUSTRATION <b>✦</b> WSRNC <b>✦</b> AI ILLUSTRATION <b>✦</b> </span><span>WSRNC <b>✦</b> AI ILLUSTRATION <b>✦</b> WSRNC <b>✦</b> AI ILLUSTRATION <b>✦</b> WSRNC <b>✦</b> AI ILLUSTRATION <b>✦</b> WSRNC <b>✦</b> AI ILLUSTRATION <b>✦</b> </span></div></div>
+    <div class="tick tick--b"><div class="track"><span>Flowers &amp; Frames<i>✦</i>Cozy Days<i>✦</i>Night Scenes<i>✦</i>Original Works<i>✦</i>WSRNC<i>✦</i>Flowers &amp; Frames<i>✦</i>Cozy Days<i>✦</i>Night Scenes<i>✦</i>Original Works<i>✦</i>WSRNC<i>✦</i>Flowers &amp; Frames<i>✦</i>Cozy Days<i>✦</i>Night Scenes<i>✦</i>Original Works<i>✦</i>WSRNC<i>✦</i></span><span>Flowers &amp; Frames<i>✦</i>Cozy Days<i>✦</i>Night Scenes<i>✦</i>Original Works<i>✦</i>WSRNC<i>✦</i>Flowers &amp; Frames<i>✦</i>Cozy Days<i>✦</i>Night Scenes<i>✦</i>Original Works<i>✦</i>WSRNC<i>✦</i>Flowers &amp; Frames<i>✦</i>Cozy Days<i>✦</i>Night Scenes<i>✦</i>Original Works<i>✦</i>WSRNC<i>✦</i></span></div></div>
+  </aside>
+  <div class="visual" id="visual">
+    <img class="flip-img" id="flipImg" alt="">
+    <div class="rect r1" id="r1"></div><div class="rect r2" id="r2"></div>
+    <div class="shade"></div>
+    <div class="hero-text"><h1><i class="ln" style="font-style:normal"><span>WSRNC</span></i><i class="ln" style="font-style:normal"><span style="animation-delay:.15s">WORKS</span></i></h1><p>ILLUSTRATION · AI ART · GAMES</p><div class="now"><small>NOW SHOWING</small><span class="en" id="nowT"></span></div></div>
+    <div class="hud"><button id="prev" aria-label="上一张">‹</button><div class="ring"><svg viewBox="0 0 64 64"><circle class="bgc" cx="32" cy="32" r="30"/><circle class="fg" id="ringFg" cx="32" cy="32" r="30"/></svg><b id="count"></b></div><button id="next" aria-label="下一张">›</button></div>
+    <div class="scroll-hint">SCROLL</div>
+  </div>
 </header>
 
 <section id="works">
@@ -122,7 +179,7 @@ X：<a href="https://x.com/wsrncmrmmp" target="_blank" style="color:var(--accent
 
 <div class="lb" id="lb"><button class="x" id="lbx">×</button>
   <img class="big-img" id="lbImg" alt="">
-  <div class="info"><h3 id="lbT"></h3><div class="y" id="lbY"></div><div class="credit" id="lbC"></div><button id="copy">复制出处</button></div>
+  <div class="info"><h3 id="lbT" class="en"></h3><div class="y" id="lbY"></div><div class="credit" id="lbC"></div><button id="copy">复制出处</button></div>
 </div>
 
 <script>
@@ -130,42 +187,42 @@ X：<a href="https://x.com/wsrncmrmmp" target="_blank" style="color:var(--accent
    img: 图片路径（和 index.html 放同一个文件夹，比如 "works/01.jpg"）
    不填 img 就显示渐变色占位 */
 const WORKS = [
-  {title:"彼岸", year:2026, tag:"花与画框", img:"works/01.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
-  {title:"白龙与骑士", year:2026, tag:"黑暗幻想", img:"works/02.jpg", credit:"原创 · WSRNC"},
-  {title:"百合", year:2026, tag:"花与画框", img:"works/03.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
-  {title:"荆棘玫瑰", year:2026, tag:"花与画框", img:"works/04.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
-  {title:"灯下小憩", year:2026, tag:"橘发少女", img:"works/05.jpg", credit:"原创 · WSRNC"},
-  {title:"草莓蛋糕进行时", year:2026, tag:"银龙的日常", img:"works/06.jpg", credit:"原创 · WSRNC"},
-  {title:"黑鳞", year:2026, tag:"银龙的夜", img:"works/07.jpg", credit:"原创 · WSRNC"},
-  {title:"王座之间", year:2026, tag:"银龙的夜", img:"works/08.jpg", credit:"原创 · WSRNC"},
-  {title:"秋日长椅", year:2026, tag:"橘发少女", img:"works/09.jpg", credit:"原创 · WSRNC"},
-  {title:"荆棘之花", year:2026, tag:"花与画框", img:"works/10.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
-  {title:"黑龙与牡丹", year:2026, tag:"花与画框", img:"works/11.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
-  {title:"金框里的蓝", year:2026, tag:"花与画框", img:"works/12.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
-  {title:"初雪", year:2026, tag:"橘发少女", img:"works/13.jpg", credit:"原创 · WSRNC"},
-  {title:"午后的猫", year:2026, tag:"橘发少女", img:"works/14.jpg", credit:"原创 · WSRNC"},
-  {title:"换袜子", year:2026, tag:"银龙的日常", img:"works/15.jpg", credit:"原创 · WSRNC"},
-  {title:"下午茶", year:2026, tag:"银龙的日常", img:"works/16.jpg", credit:"原创 · WSRNC"},
-  {title:"早安吐司", year:2026, tag:"橘发少女", img:"works/17.jpg", credit:"原创 · WSRNC"},
-  {title:"抱书的魔女", year:2026, tag:"黑暗幻想", img:"works/18.jpg", credit:"原创 · WSRNC"},
-  {title:"余烬", year:2026, tag:"黑暗幻想", img:"works/19.jpg", credit:"原创 · WSRNC"},
-  {title:"灰烬中的书", year:2026, tag:"黑暗幻想", img:"works/20.jpg", credit:"原创 · WSRNC"},
-  {title:"雨天窗边", year:2026, tag:"橘发少女", img:"works/21.jpg", credit:"原创 · WSRNC"},
-  {title:"讲题", year:2026, tag:"橘发少女", img:"works/22.jpg", credit:""},
-  {title:"雪夜炉火", year:2026, tag:"银龙的夜", img:"works/23.jpg", credit:""},
-  {title:"提灯书廊", year:2026, tag:"橘发少女", img:"works/24.jpg", credit:""},
-  {title:"樱雨", year:2026, tag:"橘发少女", img:"works/25.jpg", credit:""},
-  {title:"夏日冰茶", year:2026, tag:"橘发少女", img:"works/26.jpg", credit:""},
-  {title:"枫窗", year:2026, tag:"橘发少女", img:"works/27.jpg", credit:""},
-  {title:"炉边灯", year:2026, tag:"橘发少女", img:"works/28.jpg", credit:""},
-  {title:"月下露台", year:2026, tag:"银龙的夜", img:"works/29.jpg", credit:""},
-  {title:"雨夜对坐", year:2026, tag:"橘发少女", img:"works/30.jpg", credit:""},
-  {title:"红枫庭院", year:2026, tag:"银龙的日常", img:"works/31.jpg", credit:""},
-  {title:"画中城", year:2026, tag:"银龙的日常", img:"works/32.jpg", credit:""},
-  {title:"午后红茶", year:2026, tag:"银龙的日常", img:"works/33.jpg", credit:""},
-  {title:"找书", year:2026, tag:"银龙的日常", img:"works/34.jpg", credit:""},
-  {title:"剪花枝", year:2026, tag:"银龙的日常", img:"works/35.jpg", credit:""},
-  {title:"海边读书", year:2026, tag:"银龙的日常", img:"works/36.jpg", credit:""},
+  {title:"The Far Shore", zh:"彼岸", year:2026, tag:"花与画框", img:"works/01.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"The White Dragon & the Knight", zh:"白龙与骑士", year:2026, tag:"黑暗幻想", img:"works/02.jpg", credit:"原创 · WSRNC"},
+  {title:"Lily", zh:"百合", year:2026, tag:"花与画框", img:"works/03.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"Thorned Rose", zh:"荆棘玫瑰", year:2026, tag:"花与画框", img:"works/04.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"Nap by Lamplight", zh:"灯下小憩", year:2026, tag:"橘发少女", img:"works/05.jpg", credit:"原创 · WSRNC"},
+  {title:"Strawberry Cake in Progress", zh:"草莓蛋糕进行时", year:2026, tag:"银龙的日常", img:"works/06.jpg", credit:"原创 · WSRNC"},
+  {title:"Black Scales", zh:"黑鳞", year:2026, tag:"银龙的夜", img:"works/07.jpg", credit:"原创 · WSRNC"},
+  {title:"The Throne Room", zh:"王座之间", year:2026, tag:"银龙的夜", img:"works/08.jpg", credit:"原创 · WSRNC"},
+  {title:"Autumn Bench", zh:"秋日长椅", year:2026, tag:"橘发少女", img:"works/09.jpg", credit:"原创 · WSRNC"},
+  {title:"Bloom of Thorns", zh:"荆棘之花", year:2026, tag:"花与画框", img:"works/10.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"Black Dragon, Peony", zh:"黑龙与牡丹", year:2026, tag:"花与画框", img:"works/11.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"Blue in a Gilded Frame", zh:"金框里的蓝", year:2026, tag:"花与画框", img:"works/12.jpg", credit:"作者：WSRNC\n提示词参考：@wr3162 https://x.com/wr3162/status/2123555672608420142"},
+  {title:"First Snow", zh:"初雪", year:2026, tag:"橘发少女", img:"works/13.jpg", credit:"原创 · WSRNC"},
+  {title:"Afternoon Cat", zh:"午后的猫", year:2026, tag:"橘发少女", img:"works/14.jpg", credit:"原创 · WSRNC"},
+  {title:"Changing Socks", zh:"换袜子", year:2026, tag:"银龙的日常", img:"works/15.jpg", credit:"原创 · WSRNC"},
+  {title:"Afternoon Tea", zh:"下午茶", year:2026, tag:"银龙的日常", img:"works/16.jpg", credit:"原创 · WSRNC"},
+  {title:"Morning Toast", zh:"早安吐司", year:2026, tag:"橘发少女", img:"works/17.jpg", credit:"原创 · WSRNC"},
+  {title:"The Witch and Her Book", zh:"抱书的魔女", year:2026, tag:"黑暗幻想", img:"works/18.jpg", credit:"原创 · WSRNC"},
+  {title:"Embers", zh:"余烬", year:2026, tag:"黑暗幻想", img:"works/19.jpg", credit:"原创 · WSRNC"},
+  {title:"A Book in the Ashes", zh:"灰烬中的书", year:2026, tag:"黑暗幻想", img:"works/20.jpg", credit:"原创 · WSRNC"},
+  {title:"Rainy Window", zh:"雨天窗边", year:2026, tag:"橘发少女", img:"works/21.jpg", credit:"原创 · WSRNC"},
+  {title:"Study Session", zh:"讲题", year:2026, tag:"橘发少女", img:"works/22.jpg", credit:""},
+  {title:"Hearth on a Snowy Night", zh:"雪夜炉火", year:2026, tag:"银龙的夜", img:"works/23.jpg", credit:""},
+  {title:"Lantern in the Stacks", zh:"提灯书廊", year:2026, tag:"橘发少女", img:"works/24.jpg", credit:""},
+  {title:"Sakura Rain", zh:"樱雨", year:2026, tag:"橘发少女", img:"works/25.jpg", credit:""},
+  {title:"Summer Iced Tea", zh:"夏日冰茶", year:2026, tag:"橘发少女", img:"works/26.jpg", credit:""},
+  {title:"Maple Window", zh:"枫窗", year:2026, tag:"橘发少女", img:"works/27.jpg", credit:""},
+  {title:"Fireside Glow", zh:"炉边灯", year:2026, tag:"橘发少女", img:"works/28.jpg", credit:""},
+  {title:"Moonlit Terrace", zh:"月下露台", year:2026, tag:"银龙的夜", img:"works/29.jpg", credit:""},
+  {title:"Two on a Rainy Night", zh:"雨夜对坐", year:2026, tag:"橘发少女", img:"works/30.jpg", credit:""},
+  {title:"Crimson Maple Courtyard", zh:"红枫庭院", year:2026, tag:"银龙的日常", img:"works/31.jpg", credit:""},
+  {title:"City in a Painting", zh:"画中城", year:2026, tag:"银龙的日常", img:"works/32.jpg", credit:""},
+  {title:"Tea at Three", zh:"午后红茶", year:2026, tag:"银龙的日常", img:"works/33.jpg", credit:""},
+  {title:"Searching the Shelves", zh:"找书", year:2026, tag:"银龙的日常", img:"works/34.jpg", credit:""},
+  {title:"Pruning Blossoms", zh:"剪花枝", year:2026, tag:"银龙的日常", img:"works/35.jpg", credit:""},
+  {title:"Reading by the Sea", zh:"海边读书", year:2026, tag:"银龙的日常", img:"works/36.jpg", credit:""},
 ];
 const PH = ["#7b5cff,#ff3d7f","#1f2b5c,#5cc8ff","#2b1d1d,#c9a25b","#0f3d3a,#8fffcf","#ffb36b,#ff3d7f","#3a1c5c,#b88cff","#111,#555","#ff8fb3,#ffe08f"];
 const bg = (w,i)=> w.img ? `url("${w.img}")` : `linear-gradient(160deg,${PH[i%PH.length]})`;
@@ -186,7 +243,7 @@ function render(){
     const g=document.createElement('div');g.className='grid';
     ws.filter(w=>w.year===y).forEach((w,i)=>{
       const c=document.createElement('div');c.className='card';c.style.transitionDelay=(i%3)*0.12+'s';
-      c.innerHTML=`<div class="thumb"><img loading="lazy" src="${w.img}" alt="${w.title}"></div><div class="meta">${w.title}<span>${w.tag}</span></div>`;
+      c.innerHTML=`<div class="thumb"><img loading="lazy" src="${w.img}" alt="${w.title} / ${w.zh}"></div><div class="meta"><span class="en">${w.title}</span><span>${w.tag}</span></div>`;
       c.onclick=()=>openLb(w);g.appendChild(c);io.observe(c);
     });
     list.appendChild(g);
@@ -200,16 +257,43 @@ lbx.onclick=()=>lb.classList.remove('open');lb.onclick=e=>{if(e.target===lb)lb.c
 document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('open')});
 copy.onclick=()=>{navigator.clipboard.writeText(lbC.textContent);copy.textContent='已复制 ✓';setTimeout(()=>copy.textContent='复制出处',1500)};
 
-/* 首页轮播：自动播放全部作品 */
+/* 首页轮播：LAM 式「翻页」——两块取自下一张图主色的色板依次扫过，盖住时换图，再扫出去 */
+const FLIP=[["#8b6b6c","#271d27"],["#2f343d","#121418"],["#7c6a6a","#443e48"],["#a47c7b","#2f2124"],["#aa7a5a","#291e1a"],["#66432a","#281a10"],["#2a282e","#05060a"],["#1b1d23","#0a0b10"],["#b17752","#664836"],["#6e5e51","#130f11"],["#3f2721","#090509"],["#706855","#343631"],["#b08d7e","#79584c"],["#9a7155","#3d2e22"],["#b9a9aa","#8b8088"],["#92939f","#6f6b6c"],["#c09a7f","#6f4931"],["#695c53","#121213"],["#212223","#0e0e0e"],["#57544f","#151515"],["#534842","#342b27"],["#a5724c","#0e0c0b"],["#6a718c","#272c3b"],["#221a14","#0b0f0f"],["#9c7a64","#5c4c3d"],["#90623b","#261f12"],["#b95a1b","#261106"],["#764f3c","#131415"],["#8088a9","#454d6a"],["#5d3a29","#1b130f"],["#8b6b5f","#292222"],["#84777b","#433b3e"],["#8f8687","#504e52"],["#2f2520","#151110"],["#8b8b95","#5f6168"],["#b7c1cc","#606063"]];
 const FEATURED=[...WORKS.slice(1),WORKS[0]]; /* 从第 2 张「白龙与骑士」开始 */
-const slidesEl=document.getElementById('slides'),dotsEl=document.getElementById('dots'),nowEl=document.getElementById('now');
-FEATURED.forEach((w,i)=>{const d=document.createElement('div');d.className='slide';d.style.backgroundImage=w._bg;d.onclick=()=>openLb(w);d.style.cursor='pointer';slidesEl.appendChild(d);
-  const dot=document.createElement('i');dot.onclick=()=>go(i);dotsEl.appendChild(dot)});
-let si=0,timer;
-function go(i){si=(i+FEATURED.length)%FEATURED.length;[...slidesEl.children].forEach((e,k)=>e.classList.toggle('on',k===si));
-  [...dotsEl.children].forEach((e,k)=>{e.classList.remove('on');if(k===si){void e.offsetWidth;e.classList.add('on')}});
-  nowEl.textContent='NOW · '+FEATURED[si].title;clearTimeout(timer);timer=setTimeout(()=>go(si+1),5000)}
-go(0);
+const vis=document.getElementById('visual'),img=document.getElementById('flipImg'),r1=document.getElementById('r1'),r2=document.getElementById('r2'),
+  nowT=document.getElementById('nowT'),countEl=document.getElementById('count'),ringFg=document.getElementById('ringFg');
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+const HOLD=()=>RM.matches?7000:5000;
+let si=0,timer=null,busy=false;
+const pad=n=>String(n).padStart(2,'0');
+const load=src=>new Promise(res=>{const im=new Image();im.onload=im.onerror=()=>res();im.src=src;setTimeout(res,4000)});
+const anim=(el,from,to,ms,delay=0)=>el.animate([{transform:`translateX(${from})`},{transform:`translateX(${to})`}],{duration:ms,delay,easing:'cubic-bezier(.22,.8,.3,1)',fill:'forwards'}).finished;
+function show(i){const w=FEATURED[i];img.src=w.img;img.alt=w.title+' / '+w.zh;nowT.textContent=w.title;
+  countEl.innerHTML=pad(i+1)+'<small>/'+FEATURED.length+'</small>';
+  img.style.animation='none';void img.offsetWidth;img.style.animation='';}
+function startRing(){ringFg.classList.remove('run');void ringFg.getBoundingClientRect();ringFg.style.setProperty('--dur',HOLD()+'ms');ringFg.classList.add('run')}
+function schedule(){clearTimeout(timer);startRing();timer=setTimeout(()=>go(si+1,1),HOLD())}
+async function go(i,dir=1){
+  if(busy)return;busy=true;clearTimeout(timer);
+  const n=(i+FEATURED.length)%FEATURED.length,w=FEATURED[n],c=FLIP[WORKS.indexOf(w)]||['#333','#111'];
+  const pre=load(w.img);
+  if(RM.matches||!r1.animate){await pre;show(n);si=n;busy=false;schedule();return}
+  vis.classList.toggle('back',dir<0);
+  const s=dir>0?'-101%':'101%',e=dir>0?'101%':'-101%';
+  r1.style.background=c[0];r2.style.background=c[1];
+  await Promise.all([anim(r1,s,'0%',380),anim(r2,s,'0%',460,110),pre]);   /* 盖上 */
+  show(n);si=n;
+  await Promise.all([anim(r1,'0%',e,520,40),anim(r2,'0%',e,560,150)]);   /* 揭开 */
+  busy=false;schedule();
+}
+show(0);schedule();
+FEATURED.slice(1,3).forEach(w=>load(w.img));
+img.onclick=()=>openLb(FEATURED[si]);
+document.getElementById('next').onclick=()=>go(si+1,1);
+document.getElementById('prev').onclick=()=>go(si-1,-1);
+let tx=null;vis.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+vis.addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>45)go(si+(dx<0?1:-1),dx<0?1:-1)});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)clearTimeout(timer);else if(!busy)schedule()});
 /* 浅色 / 深色切换，会记住上次的选择 */
 const themeBtn=document.getElementById('theme');
 function setTheme(t){document.body.classList.toggle('light',t==='light');themeBtn.textContent=t==='light'?'☀':'☾';try{localStorage.setItem('theme',t)}catch(e){}}
